@@ -11,7 +11,7 @@ if(!require("RNAseq123")){
 }
 
 #Read the documentation
-browseVignettes("RNAseq123")
+#browseVignettes("RNAseq123")
 
 #Set up
 library(limma)
@@ -20,9 +20,10 @@ library(edgeR)
 library(Mus.musculus)
 
 #To get started with this analysis, download the file GSE63310_RAW.tar available online 
-url <- "https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE63310&format=file"
-utils::download.file(url, destfile="GSE63310_RAW.tar", mode="wb") 
-utils::untar("GSE63310_RAW.tar", exdir = ".")
+############# Do not need to run twice if already installed
+# url <- "https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE63310&format=file"
+# utils::download.file(url, destfile="GSE63310_RAW.tar", mode="wb") 
+# utils::untar("GSE63310_RAW.tar", exdir = ".")
 files <- c("GSM1545535_10_6_5_11.txt", "GSM1545536_9_6_5_11.txt", "GSM1545538_purep53.txt",
            "GSM1545539_JMS8-2.txt", "GSM1545540_JMS8-3.txt", "GSM1545541_JMS8-4.txt",
            "GSM1545542_JMS8-5.txt", "GSM1545544_JMS9-P7c.txt", "GSM1545545_JMS9-P8c.txt")
