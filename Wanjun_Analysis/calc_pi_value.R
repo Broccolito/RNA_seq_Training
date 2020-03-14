@@ -1,3 +1,5 @@
+rm(list = ls())
+
 library(dplyr)
 library(knitr)
 
@@ -74,7 +76,7 @@ rank_gene_interactive = function(rank_df,
 # Assiociated first order comparison 
 c157 = rank_gene(c("C1", "C5", "C7"))
 
-#Secondary Comparison
+# Secondary Comparison
 c101819 = rank_gene(c("C10", "C18", "C19"))
 
 # Fasting with CMS pre- post- hemodilution
@@ -96,3 +98,4 @@ kable(head(c91215_interactive_partial,20))
 # Please initiate multi-threading using 'jobRunScript()'
 #
 # c157_interactive = rank_gene_interactive(c157, threshold = dim(c157)[1])
+
