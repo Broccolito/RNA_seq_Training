@@ -31,7 +31,7 @@ rank_gene = function(comp_list = c("C1", "C5", "C7")){
     setwd(as.character(subset(comp_df, comparison == x)$dir))
     csv_file = list.files(pattern = "csv")
     data = read.csv(csv_file)
-    data = mutate(data, pi_value = abs(logFC) + -log10(P.Value))
+    data = mutate(data, pi_value = abs(logFC) * (-log10(P.Value)))
     data = mutate(data, comparison = x)
     setwd(wd)
     return(data)
