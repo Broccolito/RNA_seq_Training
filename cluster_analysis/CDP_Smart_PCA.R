@@ -84,16 +84,3 @@ server = function(input, output, session) {
 }
 
 shinyApp(ui, server)
-
-# seq_data_new$CMS = as.factor(ifelse(seq_data_new$CMS == 1, "CMS", "NON-CMS"))
-# seq_data_new$Exercise = as.factor(ifelse(seq_data_new$Exercise == 1, "EXERCISE", "REST"))
-# seq_data_new$Fasting = as.factor(ifelse(seq_data_new$Fasting == 1, "FASTING", "NON-FASTING"))
-# seq_data_new$Hemodilution = as.factor(ifelse(seq_data_new$Hemodilution == 1, "HEMODILUTION", "NON-HEMODILUTION"))
-# 
-# gene_list = c("ENSG00000000419", "ENSG00000000457", "ENSG00000000460", "ENSG00000000938")
-# 
-# df = select(seq_data_new, all_of(gene_list))
-# ggplotly(autoplot(prcomp(df), data = seq_data_new,
-#                   colour = "CMS", shape = "Hemodilution",
-#                   loadings = TRUE, loadings.label = TRUE, loadings.colour = 'black',
-#                   loadings.label.size = 3))
