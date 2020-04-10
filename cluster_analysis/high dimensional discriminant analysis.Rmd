@@ -15,11 +15,12 @@ library("HDclassif")
 
 ```{r}
 load(file="rna/cluster_analysis/shiny_data.RData")
+# load(file="shiny_data.RData")
 cdp<-cdp[,-c(2,3,4,5,6,7,8)]
 
 ```
 ```{r}
-sig_genes<-read.csv("rna/Find_Significant_Genes/exercise_paired.csv")
+sig_genes<-read.csv("../Find_Significant_Genes/exercise_paired.csv")
 col_order <- c(c("RNAid","Fasting","Exercise","CMS","Hemodilution"),as.character(sig_genes$ENSEMBL))
 #reorder columns according to significnat genes
 cdp<-cdp[,col_order]
