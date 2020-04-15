@@ -1,4 +1,25 @@
 library("dplyr")
+
+get_directory = function(){
+  args <- commandArgs(trailingOnly = FALSE)
+  file <- "--file="
+  rstudio <- "RStudio"
+  match <- grep(rstudio, args)
+  if(length(match) > 0){
+    return(dirname(rstudioapi::getSourceEditorContext()$path))
+  }else{
+    match <- grep(file, args)
+    if (length(match) > 0) {
+      return(dirname(normalizePath(sub(file, "", args[match]))))
+    }else{
+      return(dirname(normalizePath(sys.frames()[[1]]$ofile)))
+    }
+  }
+}
+
+wd = get_directory()
+setwd(wd)
+
 set.seed(123)
 df = read.csv(file='cdp.csv',colClasses=c('character'))
 
@@ -68,7 +89,8 @@ simulate_null_dist<-function(condition1,condition2,treatment1,treatment2,entire_
 #using data under null hypothesis, simulate the p value and obtain empirical distirbution
 simulate_pi<-function(condition1,condition2,treatment1,treatment2,entire_compare1,entire_compare2){
   pi_values<-data.frame(gene=rawdata$X)
-  for(i in seq(1,80)){
+  # Using a large it number can increase the accuracy of the simulation
+  for(i in seq(1,1000)){
     g<-simulate_null_dist(condition1,condition2,treatment1,treatment2,entire_compare1,entire_compare2)
     g1<-as.data.frame(g[1])
     g2<-as.data.frame(g[2])
@@ -90,7 +112,10 @@ simulate_pi<-function(condition1,condition2,treatment1,treatment2,entire_compare
   
 }
 #calculate the critical pi value of each gene
-get_critical_pi<-function(condition1,condition2,treatment1,treatment2,entire_compare1,entire_compare2,sig_level){
+get_critical_pi<-function(condition1,condition2,
+                          treatment1,treatment2,
+                          entire_compare1,entire_compare2,
+                          sig_level){
   l<-simulate_pi(condition1,condition2,treatment1,treatment2,entire_compare1,entire_compare2)
   critical_pi<-c()
   for(row in 1:nrow(l)){
@@ -102,8 +127,11 @@ get_critical_pi<-function(condition1,condition2,treatment1,treatment2,entire_com
   return(critical_val)
 }
 #example C18 (double comparison C1 VS C7)
-#result<-get_critical_pi(condition1="",condition2='',treatment1="",treatment2="",entire_compare1='C1_CMS_PREHEM_POSTEXvsCMS_PREHEM_PREEX',entire_compare2 = 'C7_CON_PREHEM_POSTEXvsCON_PREHEM_PREEX', sig_level=0.8)
-#head(result)
+# result<-get_critical_pi(condition1="",condition2="",
+#                         treatment1="",treatment2="",
+#                         entire_compare1='C1_CMS_PREHEM_POSTEXvsCMS_PREHEM_PREEX',
+#                         entire_compare2 = 'C7_CON_PREHEM_POSTEXvsCON_PREHEM_PREEX', sig_level=0.8)
+# head(result)
 
 
 
@@ -111,8 +139,13 @@ get_critical_pi<-function(condition1,condition2,treatment1,treatment2,entire_com
 #example for ones like 
 
 #C1_CMS_PREHEM_POSTEXvsCMS_PREHEM_PREEX
-result<-get_critical_pi(condition1="CMS",condition2="CMS",treatment1="PREHEM_POSTEX",treatment2="PREHEM_PREEX",entire_compare1 ='',entire_compare2 = '',sig_level=0.9)
-head(result)
+# microbenchmark::microbenchmark({
+  # result<-get_critical_pi(condition1="CMS",condition2="CMS",
+  #                         treatment1="PREHEM_POSTEX",treatment2="PREHEM_PREEX",
+  #                         entire_compare1 ="",entire_compare2 = "",sig_level=0.9)
+#   head(result)
+# }, times = 1L)
+
 
 
 
