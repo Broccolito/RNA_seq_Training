@@ -10,9 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 ```{r}
 #need r version 3.6 
-#if (!requireNamespace("BiocManager", quietly = TRUE)){
-#install.packages("BiocManager")}
-#BiocManager::install("biomaRt")
+# if (!requireNamespace("BiocManager", quietly = TRUE)){
+# install.packages("BiocManager")}
+# BiocManager::install("biomaRt")
 ```
 ```{r}
 library("biomaRt")
