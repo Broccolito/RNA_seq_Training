@@ -97,7 +97,7 @@ comparison = comparison %>%
                               ifelse(pi_C15>=1,pi_C15,1)))
 
 # listEnsemblArchives()
-ensembl = useMart("ensembl",dataset="hsapiens_gene_ensembl", verbose = TRUE)
+ensembl = useMart("ensembl",dataset="hsapiens_gene_ensembl",host = "grch37.ensembl.org",path="/biomart/martservice", verbose = TRUE)
 searchFilters(mart = ensembl, pattern = "ensembl")
 get_chr_loc = function(){
   tryCatch({
