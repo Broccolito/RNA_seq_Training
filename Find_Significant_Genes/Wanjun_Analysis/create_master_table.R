@@ -59,7 +59,7 @@ for(i in 1:dim(fl)[1]){
   names(f)[names(f)=="P.Value"] = paste0("P_C",i)
   names(f)[names(f)=="pi_value"] = paste0("pi_C",i)
   names(f)[names(f)=="critical_Val"] = paste0("crit_C",i)
-  f = select(f, ENSEMBL:gene_type,
+  f = dplyr::select(f, ENSEMBL:gene_type,
              starts_with("logFC"), starts_with("AveExpr"),
              starts_with("P"), starts_with("pi"),
              starts_with("crit"))
@@ -71,7 +71,7 @@ vl = ls(pattern = "comparison_")[-1]
 for(v in vl){
   comparison = full_join(comparison, get(v), by = "ENSEMBL")
 }
-comparison = select(comparison, ENSEMBL,ENTREZID,SYMBOL,gene_type,
+comparison = dplyr::select(comparison, ENSEMBL,ENTREZID,SYMBOL,gene_type,
                     starts_with("logFC"), starts_with("AveExpr"),
                     starts_with("P"), starts_with("pi"),
                     starts_with("crit"))
@@ -99,11 +99,19 @@ comparison = comparison %>%
 # listEnsemblArchives()
 ensembl = useMart("ensembl",dataset="hsapiens_gene_ensembl", verbose = TRUE)
 searchFilters(mart = ensembl, pattern = "ensembl")
-chromosome_info = getBM(attributes=c("ensembl_gene_id",
-                                     "chromosome_name",
-                                     "start_position",
-                                     "end_position"), filter="ensembl_gene_id",
-                        values = comparison$ENSEMBL, mart = ensembl)
+get_chr_loc = function(){
+  tryCatch({
+    chromosome_info <<- getBM(attributes=c("ensembl_gene_id",
+                                           "chromosome_name",
+                                           "start_position",
+                                           "end_position"), filter="ensembl_gene_id",
+                              values = comparison$ENSEMBL, mart = ensembl)
+  }, error = function(e){
+    cat("\n Server failed to connect. Re-connecting... \n")
+    get_chr_loc()
+  })
+}
+get_chr_loc()
 colnames(chromosome_info) = c("ENSEMBL","chr","start_pos","end_pos")
 comparison = full_join(comparison, chromosome_info, by = "ENSEMBL")
 
