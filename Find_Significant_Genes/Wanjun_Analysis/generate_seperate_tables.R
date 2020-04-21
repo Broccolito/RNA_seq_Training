@@ -23,13 +23,16 @@ get_directory = function(){
 setwd(get_directory())
 
 d = read.csv(file = "comparisons_master_table.csv")
-d = select(d, ENSEMBL:gene_type,pi_C1_C5_C7,pi_C10_C18_C19,pi_C9_C12_C15,
-           chr:end_pos,logFC_C1:sig_pi_C19)
+d = dplyr::select(d, ENSEMBL:gene_type,pi_C1_C5_C7,pi_C10_C18_C19,pi_C9_C12_C15,
+                  chr:end_pos,logFC_C1:sig_pi_C19)
 
 
-fasting_rest = arrange(d, desc(pi_C1_C5_C7))[1:300,]
-exercise_second_order = arrange(d, desc(pi_C10_C18_C19))[1:300,]
-exercise_paired = arrange(d, desc(pi_C9_C12_C15))[1:300,]
+fasting_rest = arrange(d, desc(pi_C1_C5_C7))[1:300,] %>%
+  dplyr::select(ENSEMBL:SYMBOL,pi_C1_C5_C7,sig_pi_C1,sig_pi_C5,sig_pi_C7,chr,start_pos,end_pos)
+exercise_second_order = arrange(d, desc(pi_C10_C18_C19))[1:300,] %>%
+  dplyr::select(ENSEMBL:SYMBOL,pi_C10_C18_C19,sig_pi_C1,sig_pi_C5,sig_pi_C7,chr,start_pos,end_pos)
+exercise_paired = arrange(d, desc(pi_C9_C12_C15))[1:300,] %>%
+  dplyr::select(ENSEMBL:SYMBOL,pi_C1_C5_C7,sig_pi_C1,sig_pi_C5,sig_pi_C7,chr,start_pos,end_pos)
 
 write.csv(fasting_rest, file = "fasting_rest.csv", 
           row.names = FALSE, quote = FALSE)

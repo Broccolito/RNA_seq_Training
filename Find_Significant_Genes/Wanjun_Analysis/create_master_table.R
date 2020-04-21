@@ -86,15 +86,15 @@ comparison = comparison %>%
   mutate(sig_pi_C15 = ifelse(pi_C15>=crit_C15,pi_C15,0)) %>%
   mutate(sig_pi_C18 = ifelse(pi_C18>=crit_C18,pi_C18,0)) %>%
   mutate(sig_pi_C19 = ifelse(pi_C19>=crit_C19,pi_C19,0)) %>%
-  mutate(pi_C1_C5_C7 = (ifelse(pi_C1>=1,pi_C1,1) *
-                            ifelse(pi_C5>=1,pi_C5,1) *
-                            ifelse(pi_C7>=1,pi_C7,1))) %>%
-  mutate(pi_C10_C18_C19 = (ifelse(pi_C10>=1,pi_C10,1) *
-                               ifelse(pi_C18>=1,pi_C18,1) *
-                               ifelse(pi_C19>=1,pi_C19,1))) %>%
-  mutate(pi_C9_C12_C15 = (ifelse(pi_C9>=1,pi_C9,1) *
-                              ifelse(pi_C12>=1,pi_C12,1) *
-                              ifelse(pi_C15>=1,pi_C15,1)))
+  mutate(pi_C1_C5_C7 = (ifelse(sig_pi_C1>=1,sig_pi_C1,1) *
+                            ifelse(sig_pi_C5>=1,sig_pi_C5,1) *
+                            ifelse(sig_pi_C7>=1,sig_pi_C7,1))) %>%
+  mutate(pi_C10_C18_C19 = (ifelse(sig_pi_C10>=1,sig_pi_C10,1) *
+                               ifelse(sig_pi_C18>=1,sig_pi_C18,1) *
+                               ifelse(sig_pi_C19>=1,sig_pi_C19,1))) %>%
+  mutate(pi_C9_C12_C15 = (ifelse(sig_pi_C9>=1,sig_pi_C9,1) *
+                              ifelse(sig_pi_C12>=1,sig_pi_C12,1) *
+                              ifelse(sig_pi_C15>=1,sig_pi_C15,1)))
 
 # listEnsemblArchives()
 ensembl = useMart("ensembl",dataset="hsapiens_gene_ensembl",
