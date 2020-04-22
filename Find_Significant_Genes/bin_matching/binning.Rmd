@@ -9,7 +9,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 ```{r}
-library("dplyr")
+suppressPackageStartupMessages({
+  library(dplyr)
+})
 ```
 
 ```{r}
@@ -19,11 +21,15 @@ chromosome_length<-c(249250612,243199373,198022430,191154276,180915260,171115067
                      81195210,78077248,59128983,63025520,48129895,51304566,155270560,59373566)
 human_chromosome<-data.frame(chromosome_name,chromosome_length)
 head(human_chromosome)
-exercise_paired<-read.csv(file="CDP_RNAseq/Find_Significant_Genes/exercise_paired.csv")
-exercise_second_order<-read.csv(file="CDP_RNAseq/Find_Significant_Genes/exercise_second_order.csv")
-fasting_rest<-read.csv(file="CDP_RNAseq/Find_Significant_Genes/fasting_rest.csv")
-cdp_compmultsign<-read.csv(file="CDP_RNAseq/Find_Significant_Genes/bin_matching/CDP_CompMultSign_list.csv")
-head(cdp_compmultsign)
+# exercise_paired<-read.csv(file="CDP_RNAseq/Find_Significant_Genes/exercise_paired.csv")
+exercise_paired<-read.csv(file="../exercise_paired.csv")
+# exercise_second_order<-read.csv(file="CDP_RNAseq/Find_Significant_Genes/exercise_second_order.csv")
+exercise_second_order<-read.csv(file="../exercise_second_order.csv")
+# fasting_rest<-read.csv(file="CDP_RNAseq/Find_Significant_Genes/fasting_rest.csv")
+fasting_rest<-read.csv(file="../fasting_rest.csv")
+# cdp_compmultsign<-read.csv(file="CDP_RNAseq/Find_Significant_Genes/bin_matching/CDP_CompMultSign_list.csv")
+cdp_compmultsign<-read.csv(file="CDP_CompMultSign_list.csv")
+tibble(head(cdp_compmultsign))
 ```
 ```{r}
 find_bins<-function(chr,start,end,bin_size=200000){
@@ -46,9 +52,9 @@ bin1<-mapply(find_bins, exercise_paired$chr, exercise_paired$start_pos, exercise
 bin2<-mapply(find_bins, exercise_second_order$chr, exercise_second_order$start_pos, exercise_second_order$end_pos)
 bin3<-mapply(find_bins, fasting_rest$chr, fasting_rest$start_pos, fasting_rest$end_pos)
 bin4<-mapply(find_bins, cdp_compmultsign$chr, cdp_compmultsign$pos, cdp_compmultsign$pos)
-df1<-cbind(exercise_paired,bin=bin1)
-df2<-cbind(exercise_second_order,bin=bin2)
-df3<-cbind(fasting_rest,bin=bin3)
+df1<-cbind(exercise_paired,bin=bin1)[,1:11]
+df2<-cbind(exercise_second_order,bin=bin2)[,1:11]
+df3<-cbind(fasting_rest,bin=bin3)[,1:11]
 df4<-cbind(cdp_compmultsign,bin=bin4)
 
 ```
@@ -63,15 +69,15 @@ write.csv(df4,"CDP_RNAseq/Find_Significant_Genes/cdp_MultSign.csv", row.names = 
 library("chromPlot")
 ```
 ```{r}
-chromplot_df1<-select(df1, chr, start_pos, end_pos)
+chromplot_df1<-dplyr::select(df1, chr, start_pos, end_pos)
 chromplot_df1<-na.omit(chromplot_df1)
 chromplot_df1$chr<-as.character(chromplot_df1$chr)
 colnames(chromplot_df1)<-c("Chrom","Start","End")
-chromplot_df2<-select(df2, chr, start_pos, end_pos)
+chromplot_df2<-dplyr::select(df2, chr, start_pos, end_pos)
 chromplot_df2<-na.omit(chromplot_df2)
 chromplot_df2$chr<-as.character(chromplot_df2$chr)
 colnames(chromplot_df2)<-c("Chrom","Start","End")
-chromplot_df3<-select(df3, chr, start_pos, end_pos)
+chromplot_df3<-dplyr::select(df3, chr, start_pos, end_pos)
 chromplot_df3<-na.omit(chromplot_df3)
 chromplot_df3$chr<-as.character(chromplot_df3$chr)
 colnames(chromplot_df3)<-c("Chrom","Start","End")
@@ -88,6 +94,8 @@ data(hg_cytoBandIdeo)
 #gaps specifies the coordinates that we use to plot on the chromosome, hg_gap is provided in package
 #below is the plot of genes in exercise_pair, bin_size=200kb,black circile is centromere
 chromPlot(gaps=hg_gap,annot1=chromplot_df1,bin=200000)
+chromPlot(gaps=hg_gap,annot1=chromplot_df2,bin=200000)
+chromPlot(gaps=hg_gap,annot1=chromplot_df3,bin=200000)
 ```
 
 
