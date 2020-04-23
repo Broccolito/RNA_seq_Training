@@ -59,10 +59,10 @@ df4<-cbind(cdp_compmultsign,bin=bin4)
 
 ```
 ```{r}
-write.csv(df1,"CDP_RNAseq/Find_Significant_Genes/exercise_paired.csv", row.names = FALSE)
-write.csv(df2,"CDP_RNAseq/Find_Significant_Genes/exercise_second_order.csv", row.names = FALSE)
-write.csv(df3,"CDP_RNAseq/Find_Significant_Genes/fasting_rest.csv", row.names = FALSE)
-write.csv(df4,"CDP_RNAseq/Find_Significant_Genes/cdp_MultSign.csv", row.names = FALSE)
+# write.csv(df1,"CDP_RNAseq/Find_Significant_Genes/exercise_paired.csv", row.names = FALSE)
+# write.csv(df2,"CDP_RNAseq/Find_Significant_Genes/exercise_second_order.csv", row.names = FALSE)
+# write.csv(df3,"CDP_RNAseq/Find_Significant_Genes/fasting_rest.csv", row.names = FALSE)
+# write.csv(df4,"CDP_RNAseq/Find_Significant_Genes/cdp_MultSign.csv", row.names = FALSE)
 ```
 
 ```{r}
