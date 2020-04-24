@@ -21,16 +21,16 @@ chromosome_length<-c(249250612,243199373,198022430,191154276,180915260,171115067
                      81195210,78077248,59128983,63025520,48129895,51304566,155270560,59373566)
 human_chromosome<-data.frame(chromosome_name,chromosome_length)
 head(human_chromosome)
-# exercise_paired<-read.csv(file="CDP_RNAseq/Find_Significant_Genes/exercise_paired.csv")
-exercise_paired<-read.csv(file="../exercise_paired.csv")
-# exercise_second_order<-read.csv(file="CDP_RNAseq/Find_Significant_Genes/exercise_second_order.csv")
-exercise_second_order<-read.csv(file="../exercise_second_order.csv")
-# fasting_rest<-read.csv(file="CDP_RNAseq/Find_Significant_Genes/fasting_rest.csv")
-fasting_rest<-read.csv(file="../fasting_rest.csv")
-# cdp_compmultsign<-read.csv(file="CDP_RNAseq/Find_Significant_Genes/bin_matching/CDP_CompMultSign_list.csv")
+exercise_paired<-read.csv(file="exercise_paired.csv")
+
+exercise_second_order<-read.csv(file="exercise_second_order.csv")
+fasting_rest<-read.csv(file="fasting_rest.csv")
 cdp_compmultsign<-read.csv(file="CDP_CompMultSign_list.csv")
-tibble(head(cdp_compmultsign))
+
 ```
+
+
+
 ```{r}
 find_bins<-function(chr,start,end,bin_size=200000){
   if(is.na(chr)| is.na(start)|is.na(end)){
@@ -59,10 +59,10 @@ df4<-cbind(cdp_compmultsign,bin=bin4)
 
 ```
 ```{r}
-# write.csv(df1,"CDP_RNAseq/Find_Significant_Genes/exercise_paired.csv", row.names = FALSE)
-# write.csv(df2,"CDP_RNAseq/Find_Significant_Genes/exercise_second_order.csv", row.names = FALSE)
-# write.csv(df3,"CDP_RNAseq/Find_Significant_Genes/fasting_rest.csv", row.names = FALSE)
-# write.csv(df4,"CDP_RNAseq/Find_Significant_Genes/cdp_MultSign.csv", row.names = FALSE)
+write.csv(df1,"exercise_paired_bin.csv", row.names = FALSE)
+write.csv(df2,"exercise_second_order_bin.csv", row.names = FALSE)
+write.csv(df3,"fasting_rest_bin.csv", row.names = FALSE)
+write.csv(df4,"cdp_MultSign_bin.csv", row.names = FALSE)
 ```
 
 ```{r}

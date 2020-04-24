@@ -40,3 +40,4 @@ write.csv(exercise_second_order, file = "exercise_second_order.csv",
           row.names = FALSE, quote = FALSE)
 write.csv(exercise_paired, file = "exercise_paired.csv", 
           row.names = FALSE, quote = FALSE)
+
