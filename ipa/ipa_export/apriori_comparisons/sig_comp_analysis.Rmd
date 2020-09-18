@@ -1,0 +1,69 @@
+---
+title: "Analysing Comparisons of Interest"
+output:
+  html_document:
+    df_print: paged
+---
+
+
+```{r,echo=FALSE}
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(readxl)
+  library(EBImage)
+  library(knitr)
+})
+
+suppressWarnings({
+  sig_comp_z = readxl::read_excel("sig_comp_zscore.xlsx")
+names(sig_comp_z) = c("canonical_pathways",
+                      "C1","C5","C7","C9","C12","C10","C15","C18","C19")
+sig_comp_z = apply(select(sig_comp_z,C1:C19),MARGIN = 2,
+                   FUN = function(x){round(as.numeric(x),3)}) %>%
+  as.data.frame() %>%
+  mutate(canonical_pathways = sig_comp_z$canonical_pathways) %>%
+  select(canonical_pathways,everything())
+sig_comp_adj_pvalue = readxl::read_excel("sig_comp_adj_pvalue.xlsx")
+names(sig_comp_adj_pvalue) = c("canonical_pathways",
+                               "C1","C5","C7","C9","C12","C10","C15","C18","C19")
+sig_comp_adj_pvalue = apply(select(sig_comp_adj_pvalue,C1:C19),MARGIN = 2,
+                   FUN = function(x){round(as.numeric(x),3)}) %>%
+  as.data.frame() %>%
+  mutate(canonical_pathways = sig_comp_adj_pvalue$canonical_pathways) %>%
+  select(canonical_pathways,everything())
+})
+```
+
+**Study Design**
+
+
+General Study Design of all comparisons
+```{r,echo=FALSE}
+readImage("CDP_RNAseq_Design.png") %>% plot()
+
+```
+
+
+Baseline comparisons (without exercise)
+
+```{r,echo=FALSE}
+readImage("CDP_RNAseq_Interested_Comp2.png") %>% plot()
+```
+
+
+Second order comparisons (with exercise)
+
+```{r,echo=FALSE}
+readImage("CDP_RNAseq_Interested_Comp1.png") %>% plot()
+```
+
+```{r}
+sig_comp_z %>% kable()
+```
+
+```{r}
+sig_comp_adj_pvalue %>% kable()
+```
+
+
+
