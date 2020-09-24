@@ -16,21 +16,35 @@ suppressPackageStartupMessages({
 
 suppressWarnings({
   sig_comp_z = readxl::read_excel("sig_comp_zscore.xlsx")
-names(sig_comp_z) = c("canonical_pathways",
-                      "C1","C5","C7","C9","C12","C10","C15","C18","C19")
-sig_comp_z = apply(select(sig_comp_z,C1:C19),MARGIN = 2,
-                   FUN = function(x){round(as.numeric(x),3)}) %>%
-  as.data.frame() %>%
-  mutate(canonical_pathways = sig_comp_z$canonical_pathways) %>%
-  select(canonical_pathways,everything())
-sig_comp_adj_pvalue = readxl::read_excel("sig_comp_adj_pvalue.xlsx")
-names(sig_comp_adj_pvalue) = c("canonical_pathways",
-                               "C1","C5","C7","C9","C12","C10","C15","C18","C19")
-sig_comp_adj_pvalue = apply(select(sig_comp_adj_pvalue,C1:C19),MARGIN = 2,
-                   FUN = function(x){round(as.numeric(x),3)}) %>%
-  as.data.frame() %>%
-  mutate(canonical_pathways = sig_comp_adj_pvalue$canonical_pathways) %>%
-  select(canonical_pathways,everything())
+  names(sig_comp_z) = c("canonical_pathways",
+                        "C1","C5","C7","C9","C12","C10","C15","C18","C19")
+  sig_comp_z = sig_comp_z %>%
+    mutate_at(c("C1","C5","C7",
+                "C9","C12","C15",
+                "C10","C18","C19"),as.numeric) %>%
+    mutate_at(c("C1","C5","C7",
+                "C9","C12","C15",
+                "C10","C18","C19"),round,3)
+  # sig_comp_z = apply(select(sig_comp_z,C1:C19),MARGIN = 2,
+  #                    FUN = function(x){round(as.numeric(x),3)}) %>%
+  #   as.data.frame() %>%
+  #   mutate(canonical_pathways = sig_comp_z$canonical_pathways) %>%
+  #   select(canonical_pathways,everything())
+  sig_comp_adj_pvalue = readxl::read_excel("sig_comp_adj_pvalue.xlsx")
+  names(sig_comp_adj_pvalue) = c("canonical_pathways",
+                                 "C1","C5","C7","C9","C12","C10","C15","C18","C19")
+  sig_comp_adj_pvalue = sig_comp_adj_pvalue %>%
+    mutate_at(c("C1","C5","C7",
+                "C9","C12","C15",
+                "C10","C18","C19"),as.numeric) %>%
+    mutate_at(c("C1","C5","C7",
+                "C9","C12","C15",
+                "C10","C18","C19"),round,3)
+  # sig_comp_adj_pvalue = apply(select(sig_comp_adj_pvalue,C1:C19),MARGIN = 2,
+  #                    FUN = function(x){round(as.numeric(x),3)}) %>%
+  #   as.data.frame() %>%
+  #   mutate(canonical_pathways = sig_comp_adj_pvalue$canonical_pathways) %>%
+  #   select(canonical_pathways,everything())
 })
 ```
 
@@ -58,12 +72,23 @@ readImage("CDP_RNAseq_Interested_Comp1.png") %>% plot()
 ```
 
 ```{r}
-sig_comp_z %>% kable()
+sig_comp_z %>%
+  head() %>% kable()
 ```
 
 ```{r}
-sig_comp_adj_pvalue %>% kable()
+sig_comp_adj_pvalue %>%
+  head() %>% kable()
 ```
+
+```{r}
+secod = sig_comp_z %>%
+  select(canonical_pathways, C10,C18,C19)
+hist(secod$C18)
+hist(secod$C19)
+```
+
+
 
 
 
