@@ -81,12 +81,64 @@ sig_comp_adj_pvalue %>%
   head() %>% kable()
 ```
 
+**Second Order comparisons**
+
 ```{r}
 secod = sig_comp_z %>%
-  select(canonical_pathways, C10,C18,C19)
-hist(secod$C18)
-hist(secod$C19)
+  select(canonical_pathways,C18,C19) %>%
+  mutate(HEMO_EXER_DIFF = C19-C18) %>%
+  na.omit() %>%
+  arrange(HEMO_EXER_DIFF)
+# write.csv(secod,file = "Second Order Comparisons.csv",quote = FALSE,row.names = FALSE)
+secod %>% 
+  arrange(desc(HEMO_EXER_DIFF)) %>%
+  head(2) %>%
+  kable()
+top_ranked_pathways = secod %>%
+  arrange(HEMO_EXER_DIFF) %>%
+  head(10)
+kable(top_ranked_pathways)
 ```
+
+**First order baseline (fasting) comparisons**
+
+```{r}
+sig_comp_z %>%
+  select(canonical_pathways,C9,C12,C15) %>%
+  filter(!is.na(C9) | !is.na(C12) | !is.na(C15)) %>%
+  kable()
+```
+
+**First Order Hemodilution Exercise Comparison**
+
+```{r}
+sig_comp_z %>%
+  select(canonical_pathways,C1,C5,C7) %>%
+  filter(!is.na(C1)) %>%
+  arrange(desc(C1)) %>%
+  filter(C1>=qnorm(0.95)) %>%
+  kable()
+
+sig_comp_z %>%
+  select(canonical_pathways,C1,C5,C7) %>%
+  filter(!is.na(C1)) %>%
+  arrange(C1) %>%
+  filter(C1<=-qnorm(0.95)) %>%
+  kable()
+```
+
+```{r}
+apriori_pathways = sig_comp_z %>%
+  select(canonical_pathways,C1,C7,C18,C19) %>%
+  filter(canonical_pathways%in%secod$canonical_pathways) %>%
+  mutate(HEMO_EXER_DIFF = C19-C18) %>%
+  arrange(HEMO_EXER_DIFF) %>%
+  select(-HEMO_EXER_DIFF)
+kable(apriori_pathways)
+# write.csv(apriori_pathways,file = "Apriori Pathways.csv",quote = FALSE,row.names = FALSE)
+```
+
+
 
 
 
